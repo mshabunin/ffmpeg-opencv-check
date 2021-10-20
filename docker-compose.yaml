@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+    builder:
+        build:
+            context: ./container
+        volumes: [ "./workdir:/workdir", "./scripts:/scripts:ro", "./cache:/cache" ]
+        user: "${UID_GID}"
+        command: bash -c "/scripts/build.sh"
+        group_add: ["${VID_GID}", "${RND_GID}"]
+        devices: [ "/dev/dri:/dev/dri" ]
+        environment:
+            - CCACHE_DIR=/cache
+            - PATH=/usr/lib/ccache:$PATH
+            - LD_LIBRARY_PATH=/workdir/install/lib:/workdir/opencv/build/lib
+            - PYTHONPATH=/workdir/opencv/build/lib/python3
+            - LIBVA_DRIVER_NAME=iHD
+            - LIBVA_DRIVERS_PATH=/workdir/install/lib/dri
+            - PATH=/workdir/install/bin:$PATH

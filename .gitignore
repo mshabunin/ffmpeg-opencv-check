@@ -1,0 +1,5 @@
+workdir/
+cache/
+.env
+scripts/*.mkv
+scripts/*.mp4
